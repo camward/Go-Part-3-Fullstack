@@ -1,10 +1,13 @@
 package views
 
 import "go/app/views/components"
+import "go/app/views/layout"
 
 templ Main() {
 	<main>
-	@components.Title("Найди работу своей мечты")
+	@layout.Header() {
+		@components.Title("Найди работу своей мечты")
+	}
 	Main
 	</main>
 }
