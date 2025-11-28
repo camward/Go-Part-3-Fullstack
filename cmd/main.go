@@ -3,6 +3,7 @@ package main
 import (
 	"go/app/config"
 	"go/app/internal/home"
+	"go/app/internal/sitemap"
 	"go/app/internal/vacancy"
 	"go/app/pkg/database"
 	"go/app/pkg/logger"
@@ -29,6 +30,7 @@ func main() {
 	}))
 	app.Use(recover.New())
 	app.Static("/public", "./public")
+	app.Static("/robots.txt", "./public/robots.txt")
 	dbpool := database.CreateDbPool(dbConfig, customLogger)
 	defer dbpool.Close()
 	storage := postgres.New(postgres.Config{
@@ -49,6 +51,7 @@ func main() {
 	// Handler
 	home.NewHandler(app, customLogger, vacancyRepo, store)
 	vacancy.NewHandler(app, customLogger, vacancyRepo)
+	sitemap.NewHandler(app)
 
 	app.Listen(":3000")
 }
